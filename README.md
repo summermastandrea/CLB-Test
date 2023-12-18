@@ -5,15 +5,17 @@ flask = pip install Flask
 flask-cors = pip install flask-cors
 xmltodict = pip install xmltodict
 
+A google cloud platform account will also be required in order to generate an API key for the google maps API used in this project. 
 
 Steps for Part 1 & 2: steps are for Ubuntu, google alternative commands for other OSs
 1. Download the Code Test folder. 
 2. Install all required dependencies.
 3. Open the Code Test folder in the command line. 
 4. Run "python3 dataStream.py <url link>" for the URL link you want to test
-5. Go to http://127.0.0.1:5000/convert_xml_to_json?parcel=[INSERT PARCEL NUMBER HERE]. The parcel number inserted should be the same as defined in the URL. Now you can view the JSON formatted data provided by the XML stream. The script is now running locally. 
-6. Now the front-end.html file can be opened in the browser. By opening this document, Javascript and jQuery are used to fetch and load the data into the HTML. This may take a few seconds. 
-7. Now the data will be displayed on the html. To try other links. Go to the terminal and use Control C to close the server. Now re-run it using the step 4 command, but change the url. Now re-fresh the HTML and the data updated for the parcel number in the new URL. 
+5. Go to http://127.0.0.1:5000/convert_xml_to_json?parcel=[INSERT PARCEL NUMBER HERE]. The parcel number inserted should be the same as defined in the URL. Now you can view the JSON formatted data provided by the XML stream. The script is now running locally.
+6. In order for the Google Maps API to work. You will need to create your own API Key via the google cloud platform. Once done, this key can be copied and inserted into the front-end.html file at line 7 where the URL says [Your API KEY]. Save this change and the file will be ready to be loaded locally. 
+7. Now the front-end.html file can be opened in the browser. By opening this document, Javascript and jQuery are used to fetch and load the data into the HTML. This may take a few seconds. 
+8. Now the data will be displayed on the html. To try other links. Go to the terminal and use Control C to close the server. Now re-run it using the step 4 command, but change the url. Now re-fresh the HTML and the data updated for the parcel number in the new URL. 
 
 Steps for Part 3: steps are for windows, SQL should be previously installed and root user should be logged in
 1. Go to the command line and type "mysql -u root -p". You will be prompted for a password and then click enter. Once logged in, the SQL command line will appear. 
