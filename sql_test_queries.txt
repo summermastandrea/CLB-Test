@@ -1,0 +1,37 @@
+1. SELECT DISTINCT inspectors.name, inspectors.phone FROM inspectors 
+	JOIN inspections ON inspectors.id = inspections.inspector 
+	JOIN inspection_parcel ON inspections.id = inspection_parcel.inspection_id
+	JOIN parcels ON inspection_parcel.parcel_id = parcels.id
+	WHERE parcels.ppn = '812-12-027';
+
+Result: 
+Name: Mia Brown Phone: (216) 555-4321
+Name: Emma Johnson Phone: (216) 555-1234
+
+2. SELECT SUM(inspections.cost_per_parcel) AS total_cost FROM inspections
+	JOIN inspection_parcel ON inspections.id = inspection_parcel.inspection_id
+	JOIN parcels on inspection_parcel.parcel_id = parcels.id
+	WHERE parcels.address LIKE '%East Cleveland, OH%';
+
+Result: 20900.00
+
+3. SELECT DISTINCT parcels.address FROM parcels
+	LEFT JOIN inspection_parcel ON inspection_parcel.parcel_id = parcels.id
+	LEFT JOIN inspections ON inspection_parcel.inspection_id = inspections.id
+	WHERE inspections.date IS NULL OR inspections.date < '2023-01-01';
+
+Result: 
+19121 Raymond St Maple Heights, OH         
+3134 W 18 St Cleveland, OH                 
+271 W Grace St Bedford, OH                 
+1576 E 133rd St East Cleveland, OH         
+4408 Buechner Ave Cleveland, OH            
+13908 Potomac Ave East Cleveland, OH       
+10213 Union Ave Cleveland, OH              
+1767 Elberon Ave East Cleveland, OH        
+1883 Rosemont Rd East Cleveland, OH        
+14213 Orinoco Ave East Cleveland, OH       
+18104 Garden Blvd Warrensville Heights, OH 
+3314 Tullamore Cleveland Heights, OH       
+8699 Lynnhaven Dr Parma Heights, OH        
+1209 E 125th St East Cleveland, OH
