@@ -2,7 +2,9 @@
 Requirements: Assumes python and pip are previously installed, install the other resources below. These installation commands are for ubuntu, google the respective commands for your OS.
 
 flask = pip install Flask
+
 flask-cors = pip install flask-cors
+
 xmltodict = pip install xmltodict
 
 A google cloud platform account will also be required in order to generate an API key for the google maps API used in this project. 
