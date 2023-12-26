@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <head>
+        <Title> Parcel Information</Title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaJlByPSbPtPcrjKH0WmHXoGo34xW6n4&libraries=places&callback=initMap"></script>
+        <script>
+            const imageMapping = {
+            "109-02-088": "/static/images/109-02-088_main_pic.JPG",
+            "673-12-062": "/static/images/673-12-062_main_pic.JPG",
+            "672-06-054": "/static/images/672-06-054_main_pic.JPG",
+            "136-18-117": "/static/images/136-18-117_main_pic.JPG",
+            "109-21-100": "/static/images/109-21-100_main_pic.JPG"
+            };
+
+            function updateParcelInfo(data){
+                const address = data.lbstream.parcelid.source[0].record.number.value + ' ' +
+                                data.lbstream.parcelid.source[0].record.street.value + ', ' +
+                                data.lbstream.parcelid.source[0].record.MAIL_CITY.value + ', ' +
+                                data.lbstream.parcelid.source[0].record.MAIL_STATE.value + ', ' +
+                                data.lbstream.parcelid.source[0].record.MAIL_ZIPCODE.value + ' ';
+                
+                //parseFloat applied to lat and long since map does not read string values
+                const longitude = parseFloat(data.lbstream.parcelid.source[0].record.LONGITUDE.value);
+                const latitude = parseFloat(data.lbstream.parcelid.source[0].record.LATITUDE.value);
+                
+                //parcel number pulled from record
+                const pNo = data.lbstream.parcelid.source[0].record.PARCEL.value;
+                
+                const parcelNo = `Parcel ID No. : ${pNo}`
+                const addr = `Address: ${address}`
+                const longlat = `Latitude: ${latitude} Longitude: ${longitude}`
+                
+                const imagePath = imageMapping[pNo];
+
+                const info = 
+                    `
+                        Property Size: ${data.lbstream.parcelid.source[0].record.propsize.value}<br>
+                        Owner: ${data.lbstream.parcelid.source[0].record.towner.value}<br>
+                        Units: ${data.lbstream.parcelid.source[0].record.units.value}<br>
+                        Year Built: ${data.lbstream.parcelid.source[1].record.ryrbuilt.value}<br>
+                    `;
+
+                const specifications = 
+                    `
+                        Air: ${data.lbstream.parcelid.source[1].record.air.value}<br>
+                        Heat: ${data.lbstream.parcelid.source[1].record.heat.value}<br>
+                        Attic: ${data.lbstream.parcelid.source[1].record.attic.value}<br>
+                        Basement (sq ft): ${data.lbstream.parcelid.source[1].record.basesqft.value}<br>
+                        Baths: ${data.lbstream.parcelid.source[1].record.baths.value}<br>
+                        Half Baths: ${data.lbstream.parcelid.source[1].record.halfbath.value}<br>
+                        Bedrooms: ${data.lbstream.parcelid.source[1].record.bedrooms.value}<br>
+                        Garage (size, capacity, type): ${data.lbstream.parcelid.source[1].record.garsize.value}, ${data.lbstream.parcelid.source[1].record.garcap.value}, ${data.lbstream.parcelid.source[1].record.gartype.value}<br>
+                        Total Living Area (sq ft): ${data.lbstream.parcelid.source[1].record.livatot.value}<br>
+                        Number of Stories: ${data.lbstream.parcelid.source[1].record.rnumstor.value}<br>
+                        Number of Rooms: ${data.lbstream.parcelid.source[1].record.rooms.value}<br>
+                        Style: ${data.lbstream.parcelid.source[1].record.style.value}<br>
+                    `;
+
+                //jQuery used to set text of HTML elements based on id with data fetched from server
+
+                //display general information to info div tag in html
+                $("#info").html(info);
+                //displays specifications of parcel/house to specifications div tag in html
+                $("#specifications").html(specifications);
+                //displays image to image div tag in html
+                $("#image").html(`<img src="${imagePath}" alt="Could not load parcel image">`);
+                //displays parcel number to pNo div tag in html
+                $("#pNo").html(parcelNo);
+                //displays address to address div tag in html
+                $("#address").text(addr);
+                //displays latitude and langitute to longlat div tag in html
+                $("#longlat").html(longlat);
+                $("#s_title").html(`Specifications`);
+                $("#g_title").html(`General Information`);
+                
+
+               
+                //calls initMap function and provides fethced longitute and latitude parameters
+                initMap(latitude, longitude);
+            }
+
+            function fetchParcelInfo() {
+            const parcelNumber = $("input[name='parcelNo']").val();
+                $.post(`http://127.0.0.1:5000/parcel_data?parcel=${parcelNumber}`, {parcelNo: parcelNumber}, function(data) {
+                    updateParcelInfo(data);
+                });
+            }
+
+              //initializing google map 
+            function initMap(latitude, longitude) {
+                //loads map
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: latitude, lng: longitude },
+                    zoom: 10,
+                });
+                //sets marker to parcel latitude and longitude
+                const marker = new google.maps.Marker({
+                    position: { lat: latitude, lng: longitude },
+                    map,
+                    title: 'Parcel Location',
+                });
+            }
+            //handles google maps API callback
+            window.initMap = initMap;
+
+        </script>
+
+    </head>
+    <body>
+        <form id="parcelForm" action="{{url_for('parcel_data')}}" method="POST">
+            <h1>Enter Parcel Number:</h1>
+            <input type="text" name="parcelNo">
+            <button type="button" onclick="fetchParcelInfo()">Fetch Parcel Information</button>
+        </form>
+    
+        
+        <div class="top-center">
+            <!--Parcel ID Display Here-->
+            <h1><div id="pNo"> </div></h1>
+
+            <br>
+            <!--Parcel Address Display Here-->
+            <h1><div id = "address"></div></h1>
+
+            
+        </div>
+        <div class="container">
+        
+           
+            <div class = "left">
+               
+                <br>
+                <!--Parcel Image Display Here-->
+                <div id="image"> </div>
+
+                <br>
+                <!-- Home Specifications Display Here-->  
+                <h2 style = "text-decoration-line: underline;"> <div id="s_title"></div> </h2>
+                <div id="specifications"></div>
+            </div>
+
+            <div class="right">
+                <!--General Home Information Display Here-->
+                <h2 style = "text-decoration-line: underline;"> <div id="g_title"></div> </h2>
+                <div id="info"></div>
+
+                <!--Parcel Longitute and Latitude Displays Here-->
+                <h3><div id="longlat"></div></h3>
+                <!--Google map API Displays Here-->
+                <div id="map" style = "height: 400px; width: 50%; float:left; margin-right: 10px; margin-left: 10px; margin-top: 10px"> </div>
+            </div>
+        </div>
+
+    </body>
+</html>
