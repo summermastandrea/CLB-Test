@@ -12,14 +12,14 @@ A google cloud platform account will also be required in order to generate an AP
 Steps for Part 1 & 2: steps are for Ubuntu, google alternative commands for other OSs
 1. Download the Code Test folder. 
 2. Install all required dependencies.
-3. Open the Code Test folder in the command line. 
-4. Run "python3 dataStream.py <url link>" for the URL link you want to test
-5. Go to http://127.0.0.1:5000/convert_xml_to_json?parcel=[INSERT PARCEL NUMBER HERE]. The parcel number inserted should be the same as defined in the URL. Now you can view the JSON formatted data provided by the XML stream. The script is now running locally.
-6. In order for the Google Maps API to work. You will need to create your own API Key via the google cloud platform. Once done, this key can be copied and inserted into the front-end.html file at line 7 where the URL says [Your API KEY]. Save this change and the file will be ready to be loaded locally. 
-7. Now the front-end.html file can be opened in the browser. By opening this document, Javascript and jQuery are used to fetch and load the data into the HTML. This may take a few seconds. 
-8. Now the data will be displayed on the html. To try other links. Go to the terminal and use Control C to close the server. Now re-run it using the step 4 command, but change the url. Now re-fresh the HTML and the data updated for the parcel number in the new URL. 
+3. For the Google Maps API to work. You will need to create your API Key via the Google Cloud platform. Once done, this key can be copied and inserted into the front-end.html file at line 7 where the URL says [Your API KEY]. Save this change and the file will be ready to be loaded locally. 
+4. Open the Code Test folder in the command line. 
+5. Run "python3 dataStream.py" to start the application
+6. Go to http://127.0.0.1:5000/parcel_data?parcel=[INSERT PARCEL NUMBER HERE]. The parcel number inserted should be the parcel number whose information you'd like to view. Now you can view the JSON formatted data provided by the XML file. 
+7. Now go to your browser and go to "http://127.0.0.1:5000/". This loads the HTML in the browser and will display a blank page that only asks the user to insert what parcel number they would like to view.
+8. Once the parcel number is inserted and the button is clicked the data will be displayed on the html. To try other parcels, go to the top of the page and enter a new parcel number.  
 
-Steps for Part 3: steps are for windows, SQL should be previously installed and root user should be logged in
+Steps for Part 3: steps are for Windows, SQL should be previously installed and the root user should be logged in
 1. Go to the command line and type "mysql -u root -p". You will be prompted for a password and then click enter. Once logged in, the SQL command line will appear. 
 2. Now create a database using "CREATE DATABASE [insert database name here];", click enter. Now the database was crreated, but before loading the sql_test.sql file, you but use the command "USE [insert database name here];". 
 3. Now copy your file path for the sql_test.sql file and use the command "source [insert file path here]" then enter. Make sure the file path is using forward slashes and not back slashes. This will load the contents of the dump into the new database. 
