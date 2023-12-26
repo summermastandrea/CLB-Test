@@ -5,8 +5,9 @@
     <head>
         <Title> Parcel Information</Title>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqaJlByPSbPtPcrjKH0WmHXoGo34xW6n4&libraries=places&callback=initMap"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=[YOUR API KEY]&libraries=places&callback=initMap"></script>
         <script>
+            //image mapping
             const imageMapping = {
             "109-02-088": "/static/images/109-02-088_main_pic.JPG",
             "673-12-062": "/static/images/673-12-062_main_pic.JPG",
@@ -14,7 +15,7 @@
             "136-18-117": "/static/images/136-18-117_main_pic.JPG",
             "109-21-100": "/static/images/109-21-100_main_pic.JPG"
             };
-
+            //defines variables with data from XML to be used in HTML
             function updateParcelInfo(data){
                 const address = data.lbstream.parcelid.source[0].record.number.value + ' ' +
                                 data.lbstream.parcelid.source[0].record.street.value + ', ' +
@@ -73,15 +74,15 @@
                 $("#address").text(addr);
                 //displays latitude and langitute to longlat div tag in html
                 $("#longlat").html(longlat);
+                //displays section titles
                 $("#s_title").html(`Specifications`);
                 $("#g_title").html(`General Information`);
-                
-
-               
+            
                 //calls initMap function and provides fethced longitute and latitude parameters
                 initMap(latitude, longitude);
             }
 
+            //Takes parcel number inputed by end-user on HTML and fetches json data, json data is then passed to the function above
             function fetchParcelInfo() {
             const parcelNumber = $("input[name='parcelNo']").val();
                 $.post(`http://127.0.0.1:5000/parcel_data?parcel=${parcelNumber}`, {parcelNo: parcelNumber}, function(data) {
@@ -89,7 +90,7 @@
                 });
             }
 
-              //initializing google map 
+            //initializing google map 
             function initMap(latitude, longitude) {
                 //loads map
                 const map = new google.maps.Map(document.getElementById('map'), {
@@ -129,7 +130,6 @@
         </div>
         <div class="container">
         
-           
             <div class = "left">
                
                 <br>
@@ -140,9 +140,11 @@
                 <!-- Home Specifications Display Here-->  
                 <h2 style = "text-decoration-line: underline;"> <div id="s_title"></div> </h2>
                 <div id="specifications"></div>
+                
             </div>
 
             <div class="right">
+                
                 <!--General Home Information Display Here-->
                 <h2 style = "text-decoration-line: underline;"> <div id="g_title"></div> </h2>
                 <div id="info"></div>
@@ -151,6 +153,7 @@
                 <h3><div id="longlat"></div></h3>
                 <!--Google map API Displays Here-->
                 <div id="map" style = "height: 400px; width: 50%; float:left; margin-right: 10px; margin-left: 10px; margin-top: 10px"> </div>
+                
             </div>
         </div>
 
